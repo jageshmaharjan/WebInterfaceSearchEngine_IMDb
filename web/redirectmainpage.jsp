@@ -3,8 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="MyPackage.RankingModelVSM" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="BLL.BLLMovies" %>
-<%@ page import="BLL.BLLActor" %>
+<%@ page import="BLL.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html lang="en">
@@ -52,6 +51,18 @@
 
                     for (Integer mlst : movielst)
                     {
+                        BLLLanguage blllang = new BLLLanguage();
+                        List<String> lang_lst = new ArrayList<>();
+                        lang_lst = blllang.getAllLanguageByMovieID(mlst);
+
+                        BLLGenre bllgenre = new BLLGenre();
+                        List<String> genre_lst = new ArrayList<>();
+                        genre_lst = bllgenre.getAllGenreByMovieID(mlst);
+
+                        BLLDirector blldir = new BLLDirector();
+                        List<String> dir_lst = new ArrayList<>();
+                        dir_lst = blldir.getAllDirectorByMovieID(mlst);
+
                         BLLActor bllact = new BLLActor();
                         List<String> actorsByMovie = new ArrayList<>();
                         actorsByMovie = bllact.getAllActorsByMovie(mlst);
@@ -65,12 +76,13 @@
                             <div class="panel panel-default">
                             <div class="panel-heading">
                             <div class="row">
-                                <div class="col-xs-6 col-sm-1" > <%= rs.getString("ReleaseDate") %></div>
+                                <div class="col-xs-6 col-sm-1" > <%= "Release: " + rs.getString("ReleaseDate") %></div>
                                 <div class="col-xs-6 col-sm-9">
                                     <a href="<%= rs.getString("url")%>">
                                     <h4 class="list-group-item-heading"> <%=  rs.getString("MovieName")  %></h4></a>
+                                    <%= "Dir: " + dir_lst %>
                                 </div>
-                                <div class="col-xs-6 col-sm-2"><%= rs.getString("Rating") %></div>
+                                <div class="col-xs-6 col-sm-2"><%= "Rating: " + rs.getString("Rating") %></div>
                             </div>
                             </div>
                             <div class="panel-body">
@@ -81,9 +93,19 @@
                             </div>
                             </div>
                             <div class="row">
-                                <p class="col-xs-6 col-sm-12">
-                                    <%= actorsByMovie %>
-                                </p>
+                                <div class="col-xs-6 col-sm-11">
+                                    <%= "\t Starting: " + actorsByMovie %>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-12">
+                                    <%= "\t Genre: " + genre_lst %>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-12">
+                                <%= "\t Language: "+ lang_lst %>
+                                </div>
                             </div>
                             </div>
                         <%
@@ -93,7 +115,6 @@
                     <%
                     }
                 %>
-
             <%--</table>--%>
         </div>
     </div>
