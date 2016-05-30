@@ -22,12 +22,13 @@
 
 </head>
 <body>
+    <% String searchtxt = request.getParameter("searchtext");%>
     <div class="container-fluid">
         <div class="jumbotron jumbotron-fluid " style="height: 10px">
             <div class="row">
                 <form action="redirectmainpage.jsp" method="post">
                 <div class="col-xs-12 col-md-8">
-                    <input type="text" class="form-control" align="center"  id="search" placeholder="Search your Movie here" name="searchtext" value=" <%= request.getParameter("searchtext")%> ">
+                    <input type="text" class="form-control" align="center"  id="search" placeholder="Search your Movie here" name="searchtext" value=" <%= searchtxt %> ">
                 </div>
                 <div class="col-xs-6 col-md-4">
                     <button type="submit" class="btn btn-primary" name="Search" value="Search">Search Movies</button>
