@@ -37,8 +37,6 @@
             </div>
         </div>
         <div>
-            <%--<table class="table table-striped">--%>
-
                 <%
                     BLLMovies bllmovie = new BLLMovies();
 
@@ -68,7 +66,6 @@
                         List<String> actorsByMovie = new ArrayList<>();
                         actorsByMovie = bllact.getAllActorsByMovie(mlst);
 
-                        %><tr><td><%
                         String moviename;
                         rs = bllmovie.getAllMoviesFromMovies(mlst);
                         while (rs.next())
@@ -87,36 +84,42 @@
                             </div>
                             </div>
                             <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-12">
-                                    <p class="list-group-item-text"> <%= rs.getString("Storyline") %> </p>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <img src=" <%= rs.getString("coverpicurl")%>">
+                                    </div>
+                                    <div class="col-sm-11">
+                                        <div class="row">
+                                            <div class="col-xs-6 col-sm-12">
+                                                <p class="list-group-item-text"> <%= rs.getString("Storyline") %> </p>
+                                            </div>
+                                        </div>
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-11">
+                                            <%= "\t Starting: " + actorsByMovie %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-12">
+                                            <%= "\t Genre: " + genre_lst %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-12">
+                                            <%= "\t Language: "+ lang_lst %>
+                                        </div>
+                                    </div>
+                                    </div>
                                 </div>
-                            </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-11">
-                                    <%= "\t Starting: " + actorsByMovie %>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-12">
-                                    <%= "\t Genre: " + genre_lst %>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-12">
-                                <%= "\t Language: "+ lang_lst %>
-                                </div>
-                            </div>
                             </div>
                         <%
                         }
                         %>
-                        </td></tr>
+                        </div>
                     <%
                     }
+                        searchtxt = "";
                 %>
-            <%--</table>--%>
         </div>
     </div>
 
