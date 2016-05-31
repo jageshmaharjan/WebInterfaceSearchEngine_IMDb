@@ -19,7 +19,7 @@
 
         movielst = RankingModelVSM.rankProcessing(search_query);
 
-        System.out.println(movielst);
+
     %>
 </body>
 </html>

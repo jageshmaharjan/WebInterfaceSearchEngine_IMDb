@@ -24,7 +24,7 @@
   <body>
   <h1 class="text-center">Movie Sentiment Classification</h1>
   <div class="container-fluid">
-      <img src="images/imdbjlogo.jpg" class="center-block">
+      <img src="images/logoJ.jpg" class="center-block">
           <%--<% Date date = new Date(); %>--%>
             <%--<div class="center-block" >--%>
                 <%--<%= date.toString() %>--%>
@@ -40,7 +40,9 @@
           <br><br>
           <div class="row">
               <%--<div class="col-xs-4" ></div>--%>
-              <div class="col-md-6 col-md-offset-3" align="center" ><button type="submit" class="btn btn-primary" name="Search" value="Search">Search Movies</button></div>
+              <div class="col-md-6 col-md-offset-3" align="center" >
+                  <button type="submit" class="btn btn-primary" name="Search" value="Search">Search Movies</button>
+              </div>
               <%--<div class="col-xs-4" ></div>--%>
           </div>
           </div>
