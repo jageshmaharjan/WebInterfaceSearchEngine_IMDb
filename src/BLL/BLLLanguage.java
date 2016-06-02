@@ -7,34 +7,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jagesh on 05/30/2016.
  */
 public class BLLLanguage
 {
-    public List<String> getAllLanguageByMovieID(int movieid) throws SQLException, ClassNotFoundException
+    public Map<Integer, List<String > > getAllLanguageByMovieID(List<Integer> movieIds) throws SQLException, ClassNotFoundException
     {
-        List<String> langlst = new ArrayList<>();
+        Map<Integer, List<String>> result = new HashMap<>();
 
-        Connection con = DAO.getConnection();
-        String sql = "SELECT * FROM movie_language WHERE  movieID= ? ";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1,movieid);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next())
+        String query = "SELECT name FROM languages, movie_language WHERE languages.idlanguage = movie_language.languageID AND movie_language.movieID=?";
+        try(Connection con = DAO.getConnection();
+            PreparedStatement ps = con.prepareStatement(query); )
         {
-            int langid = rs.getInt("languageID");
-            String sql_lang = "SELECT * FROM languages WHERE  idlanguage = ?";
-            PreparedStatement ps_lang = con.prepareStatement(sql_lang);
-            ps_lang.setInt(1,langid);
-            ResultSet rs_lang = ps_lang.executeQuery();
-            while (rs_lang.next())
+            for (Integer movieid : movieIds)
             {
-                langlst.add(rs_lang.getString("name"));
+                ps.setInt(1,movieid);
+                ResultSet rs = ps.executeQuery();
+                List<String> languages = new ArrayList<>();
+                while (rs.next())
+                {
+                    languages.add(rs.getString("name"));
+                }
+                result.put(movieid,languages);
             }
         }
-        return langlst;
+        return result;
     }
 }

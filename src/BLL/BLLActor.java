@@ -7,59 +7,41 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jagesh on 05/30/2016.
  */
 public class BLLActor
 {
-    public List<String> getAllActorsByMovie(int movieid) throws SQLException, ClassNotFoundException
+    public Map<Integer, List<String> > getAllActorsFromMovies(List<Integer> movieIds) throws SQLException, ClassNotFoundException
     {
-        List<String> actor_name = new ArrayList<>();
+        Map<Integer, List<String>> results = new HashMap<>(movieIds.size());
 
-        Connection con = DAO.getConnection();
-        String sql = "SELECT * FROM movie_actor WHERE movieID=?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1,movieid);
+        String query = "SELECT Name FROM stars, movie_actor WHERE movie_actor.starID = stars.idstars AND movie_actor.movieID=?";
 
-        ResultSet resultSet = ps.executeQuery();
-        while (resultSet.next())
+        try (Connection conn = DAO.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query))
         {
-            int starid = resultSet.getInt("starID");
-            String sql_act = "SELECT * FROM stars WHERE idstars=?";
-            PreparedStatement prpstm = con.prepareStatement(sql_act);
-            prpstm.setInt(1,starid);
-            ResultSet rs_act = prpstm.executeQuery();
-            while (rs_act.next())
+            for (Integer movieId : movieIds)
             {
-                actor_name.add(rs_act.getString("Name"));
+                ps.setInt(1, movieId);
+                ResultSet rs = ps.executeQuery();
+
+                List<String> actors = new ArrayList<>();
+
+                while (rs.next())
+                {
+                    actors.add(rs.getString("Name"));
+                }
+
+                results.put(movieId, actors);
+                rs.close();
             }
         }
-        return actor_name;
-    }
 
-    public List<String> getAllActorUrlByMovie(int movieid) throws SQLException, ClassNotFoundException
-    {
-        List<String> actor_url = new ArrayList<>();
-        Connection con = DAO.getConnection();
-        String sql = "SELECT * FROM movie_actor WHERE movieID=?";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1,movieid);
-
-        ResultSet resultSet = ps.executeQuery();
-        while (resultSet.next())
-        {
-            int starid = resultSet.getInt("starID");
-            String sql_url= "SELECT * FROM stars WHERE idstars =?";
-            PreparedStatement ps_url = con.prepareStatement(sql_url);
-            ps_url.setInt(1,starid);
-            ResultSet rs_url = ps_url.executeQuery();
-            while (rs_url.next())
-            {
-                actor_url.add(rs_url.getString("url"));
-            }
-        }
-        return actor_url;
+        return results;
     }
 }

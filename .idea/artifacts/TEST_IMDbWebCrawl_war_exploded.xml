@@ -7,6 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="TEST_IMDbWebCrawl" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="exude-0.0.2" />
+          <element id="library" level="project" name="json-simple-1.1.1" />
+          <element id="library" level="project" name="mysql-connector-java-5.1.38-bin" />
+        </element>
       </element>
     </root>
   </artifact>

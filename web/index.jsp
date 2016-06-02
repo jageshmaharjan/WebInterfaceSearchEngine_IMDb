@@ -25,12 +25,9 @@
   <h1 class="text-center">Movie Sentiment Classification</h1>
   <div class="container-fluid">
       <img src="images/logoJ.jpg" class="center-block">
-          <%--<% Date date = new Date(); %>--%>
-            <%--<div class="center-block" >--%>
-                <%--<%= date.toString() %>--%>
-            <%--</div>--%>
       <br>
   </div>
+
       <form action="redirectmainpage.jsp" method="post">
           <div style="font-size: large" align="center" > Find Movies Matching Your Sentiments</div>
               <br>
@@ -41,7 +38,10 @@
           <div class="row">
               <%--<div class="col-xs-4" ></div>--%>
               <div class="col-md-6 col-md-offset-3" align="center" >
-                  <button type="submit" class="btn btn-primary" name="Search" value="Search">Search Movies</button>
+                  <button type="submit" class="btn btn-primary" name="Search"  value="Search">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      Search Movies
+                  </button>
               </div>
               <%--<div class="col-xs-4" ></div>--%>
           </div>

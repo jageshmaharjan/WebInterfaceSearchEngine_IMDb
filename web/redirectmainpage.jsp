@@ -1,9 +1,8 @@
-<%@ page import="java.util.Date" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
 <%@ page import="MyPackage.RankingModelVSM" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="BLL.*" %>
+<%@ page import="BO.BOMovie" %>
+<%@ page import="java.util.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html lang="en">
@@ -21,105 +20,114 @@
     <script src="bootstrap-3.3.6-dist/js/jquery-2.1.4.js"></script>
 
 </head>
+
 <body>
-    <% String searchtxt = request.getParameter("searchtext");%>
+    <%
+        String stxt = request.getParameter("searchtext");
+    %>
+
     <div class="container-fluid">
         <div class="jumbotron jumbotron-fluid " style="height: 10px">
             <div class="row">
                 <form action="redirectmainpage.jsp" method="post">
-                <div class="col-xs-12 col-md-8">
-                    <input type="text" class="form-control" align="center"  id="search" placeholder="Search your Movie here" name="searchtext" value=" <%= searchtxt %> ">
+                    <div class="col-xs-12 col-md-1">
+                        <img src="images/smalllogoJ.jpg" >
+                    </div>
+                <div class="col-xs-12 col-md-9">
+                    <input type="text" class="form-control" align="center"  id="search" placeholder="Search your Movie here" name="searchtext" value="<%= request.getParameter("searchtext")%>" >
                 </div>
-                <div class="col-xs-6 col-md-4">
-                    <button type="submit" class="btn btn-primary" name="Search" value="Search">Search Movies</button>
+                <div class="col-xs-6 col-md-2">
+                    <button type="submit" class="btn btn-primary" name="Search" value="Search">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        Search Movies
+                    </button>
                 </div>
                 </form>
             </div>
         </div>
         <div>
-                <%
-                    BLLMovies bllmovie = new BLLMovies();
+            <%
 
-                    List<Integer> movielst = new ArrayList<>();
-                    String search_query = request.getParameter("searchtext");
+//                List<Integer> movielst = new ArrayList<Integer>();
+//                String search_query = request.getParameter("searchtext");
+//                movielst = RankingModelVSM.rankProcessing(search_query);
 
-                    movielst = RankingModelVSM.rankProcessing(search_query);
+                List<Integer> num = new ArrayList<Integer>();
+                for (int i=1;i<100;i++)
+                {
+                    num.add(i);
+                }
 
-                    System.out.println(movielst);
-                    ResultSet rs;
+                BLLMovies bllmovie = new BLLMovies();
+                List<BOMovie> bomovelst = new ArrayList<BOMovie>();
+                bomovelst = bllmovie.getAllMoviesFromMovies(num);
 
-                    for (Integer mlst : movielst)
-                    {
-                        BLLLanguage blllang = new BLLLanguage();
-                        List<String> lang_lst = new ArrayList<>();
-                        lang_lst = blllang.getAllLanguageByMovieID(mlst);
 
-                        BLLGenre bllgenre = new BLLGenre();
-                        List<String> genre_lst = new ArrayList<>();
-                        genre_lst = bllgenre.getAllGenreByMovieID(mlst);
+                Map<Integer, List<String> > actor = new HashMap<Integer, List<String> >();
+                BLLActor bllActor = new BLLActor();
+                actor = bllActor.getAllActorsFromMovies(num);
 
-                        BLLDirector blldir = new BLLDirector();
-                        List<String> dir_lst = new ArrayList<>();
-                        dir_lst = blldir.getAllDirectorByMovieID(mlst);
+                Map<Integer,List<String>> director = new HashMap<Integer,List<String>>();
+                BLLDirector bllDirector = new BLLDirector();
+                director = bllDirector.getAllDirectorByMovieID(num);
 
-                        BLLActor bllact = new BLLActor();
-                        List<String> actorsByMovie = new ArrayList<>();
-                        actorsByMovie = bllact.getAllActorsByMovie(mlst);
+                Map<Integer,List<String>> genre = new HashMap<Integer,List<String>>();
+                BLLGenre bllGenre = new BLLGenre();
+                genre = bllGenre.getAllGenreByMovieID(num);
 
-                        String moviename;
-                        rs = bllmovie.getAllMoviesFromMovies(mlst);
-                        while (rs.next())
-                        {
-                        %>
-                            <div class="panel panel-default">
-                            <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-6 col-sm-1" > <%= "Release: " + rs.getString("ReleaseDate") %></div>
-                                <div class="col-xs-6 col-sm-9">
-                                    <a href="<%= rs.getString("url")%>">
-                                    <h4 class="list-group-item-heading"> <%=  rs.getString("MovieName")  %></h4></a>
-                                    <%= "Dir: " + dir_lst %>
-                                </div>
-                                <div class="col-xs-6 col-sm-2"><%= "Rating: " + rs.getString("Rating") %></div>
-                            </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-1">
-                                        <img src=" <%= rs.getString("coverpicurl")%>">
-                                    </div>
-                                    <div class="col-sm-11">
-                                        <div class="row">
-                                            <div class="col-xs-6 col-sm-12">
-                                                <p class="list-group-item-text"> <%= rs.getString("Storyline") %> </p>
-                                            </div>
-                                        </div>
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-11">
-                                            <%= "\t Starting: " + actorsByMovie %>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-12">
-                                            <%= "\t Genre: " + genre_lst %>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-6 col-sm-12">
-                                            <%= "\t Language: "+ lang_lst %>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <%
-                        }
-                        %>
+                Map<Integer,List<String>> language = new HashMap<Integer,List<String>>();
+                BLLLanguage bllLanguage = new BLLLanguage();
+                language = bllLanguage.getAllLanguageByMovieID(num);
+
+
+                for (BOMovie bom : bomovelst)
+                {
+            %>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-1" > <%= "Release: " + bom.getReleasedate() %></div>
+                        <div class="col-xs-6 col-sm-9">
+                            <a href="<%= bom.getMovieurl() %>">
+                                <h4 class="list-group-item-heading"> <%=  bom.getMoviename()  %></h4></a>
+                            <%= "Dir: " + director.get(bom.getMovieid()) %>
                         </div>
-                    <%
-                    }
-                        searchtxt = "";
-                %>
+                        <div class="col-xs-6 col-sm-2"><%= "Rating: " + bom.getRating()  %></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <img src=" <%= bom.getCoverurl() %>">
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-12">
+                                    <p class="list-group-item-text"> <%= bom.getStoryline() %> </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-11">
+                                    <%= "\t Starting: " + actor.get(bom.getMovieid()) %>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-12">
+                                    <%= "\t Genre: " + genre.get(bom.getMovieid()) %>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-12">
+                                    <%= "\t Language: "+ language.get(bom.getMovieid()) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%
+                }
+            %>
         </div>
     </div>
 

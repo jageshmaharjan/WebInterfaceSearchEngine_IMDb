@@ -44,7 +44,7 @@ public class RankingModelVSM
                 prepstm.close();
             }
             N = alldocsId.size();
-            System.out.println(N);
+//            System.out.println(N);
 
             double[] doclen = new double[N];
             //List<Double> doclen = new ArrayList<>();
@@ -99,7 +99,7 @@ public class RankingModelVSM
                     tf[i] += termfreq[j][i];
                 }
             }
-            System.out.println(Arrays.toString(tf));
+            //System.out.println(Arrays.toString(tf));
 
             List<Integer> alldocIDlst = new ArrayList<>();
             Iterator it = alldocsId.iterator();
@@ -107,7 +107,7 @@ public class RankingModelVSM
             {
                 alldocIDlst.add(Integer.valueOf(it.next().toString()));
             }
-            System.out.println(alldocIDlst);
+            //System.out.println(alldocIDlst);
 
             rankedMovies = calculateVSM(tf,doclen,IDF,avdl,alldocIDlst);
 
@@ -142,7 +142,7 @@ public class RankingModelVSM
 
         for (Map.Entry<Float,String> entry :docRank.entrySet())
         {
-            System.out.println(entry.getValue() + " , " + entry.getKey());
+//            System.out.println(entry.getValue() + " , " + entry.getKey());
             rankedMovieList.add(Integer.valueOf(entry.getValue()));
         }
 

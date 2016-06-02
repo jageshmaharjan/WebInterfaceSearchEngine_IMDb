@@ -13,6 +13,17 @@
         <property name="characterEncoding" value="utf8" />
         <property name="characterSetResults" value="utf8" />
         <property name="yearIsDateType" value="false" />
+        <property name="autoReconnectForPools" value="true" />
+        <property name="callableStmtCacheSize" value="1000" />
+        <property name="largeRowSizeThreshold" value="20480" />
+        <property name="prepStmtCacheSqlLimit" value="2560" />
+        <property name="prepStmtCacheSize" value="250" />
+        <property name="allowMultiQueries" value="true" />
+        <property name="autoClosePStmtStreams" value="true" />
+        <property name="allowMasterDownConnections" value="true" />
+        <property name="defaultFetchSize" value="200" />
+        <property name="useServerPrepStmts" value="true" />
+        <property name="explainSlowQueries" value="true" />
       </driver-properties>
     </data-source>
   </component>

@@ -7,35 +7,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jagesh on 05/30/2016.
  */
 public class BLLGenre
 {
-    public List<String> getAllGenreByMovieID(int movieid) throws SQLException, ClassNotFoundException
+    public Map<Integer, List<String>> getAllGenreByMovieID(List<Integer> movieIds) throws SQLException, ClassNotFoundException
     {
-        List<String> genlst = new ArrayList<>();
+        Map<Integer, List<String>> result = new HashMap<>();
 
-        Connection con = DAO.getConnection();
-
-        String sql ="SELECT * FROM movie_genre WHERE movieid =?  ";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1,movieid);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next())
+        String query = "SELECT genreName FROM genre,movie_genre WHERE genre.idgenre = movie_genre.genreid AND movie_genre.movieid=?";
+        try(Connection con = DAO.getConnection();
+            PreparedStatement ps = con.prepareStatement(query);)
         {
-            int genid = rs.getInt("genreid");
-            String sql_gen = "SELECT * FROM genre WHERE idgenre =? ";
-            PreparedStatement ps_gen = con.prepareStatement(sql_gen);
-            ps_gen.setInt(1,genid);
-            ResultSet rs_gen = ps_gen.executeQuery();
-            while (rs_gen.next())
+            for (Integer movieid : movieIds)
             {
-                genlst.add(rs_gen.getString("genreName"));
+                ps.setInt(1,movieid);
+                ResultSet rs = ps.executeQuery();
+                List<String> gennames = new ArrayList<String>();
+                while (rs.next())
+                {
+                    gennames.add(rs.getString("genreName"));
+                }
+                result.put(movieid,gennames);
             }
         }
-        return genlst;
+        return result;
     }
 }

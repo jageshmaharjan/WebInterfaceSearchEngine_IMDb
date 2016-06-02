@@ -7,34 +7,36 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jagesh on 05/30/2016.
  */
 public class BLLDirector
 {
-    public List<String> getAllDirectorByMovieID(int movieid) throws SQLException, ClassNotFoundException
+    public Map<Integer, List<String>> getAllDirectorByMovieID(List<Integer> movieIds) throws SQLException, ClassNotFoundException
     {
-        List<String> dir_lst = new ArrayList<>();
+        Map<Integer, List<String> > result = new HashMap<>();
 
-        Connection con = DAO.getConnection();
-        String sql = "SELECT * FROM movie_director WHERE movieID=? ";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1,movieid);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next())
+        String query = "SELECT Name FROM director, movie_director WHERE movie_director.directorID = director.iddirector AND movie_director.movieID = ?";
+
+        try(Connection con = DAO.getConnection();
+            PreparedStatement ps = con.prepareStatement(query);)
         {
-            int dirid = rs.getInt("directorID");
-            String sql_dir = "SELECT * FROM director WHERE iddirector= ?";
-            PreparedStatement ps_dir = con.prepareStatement(sql_dir);
-            ps_dir.setInt(1,dirid);
-            ResultSet rs_dir = ps_dir.executeQuery();
-            while (rs_dir.next())
+            for (Integer movieid : movieIds)
             {
-                dir_lst.add(rs_dir.getString("Name"));
+                ps.setInt(1,movieid);
+                ResultSet rs = ps.executeQuery();
+                List<String> directors = new ArrayList<>();
+                while (rs.next())
+                {
+                    directors.add(rs.getString("Name"));
+                }
+                result.put(movieid,directors);
             }
         }
-        return dir_lst;
+        return result;
     }
 }

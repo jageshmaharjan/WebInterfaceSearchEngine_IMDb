@@ -20,10 +20,10 @@ public class DAO
 
         Class.forName(driver);
         Connection con = DriverManager.getConnection(connection, user, password);
-//        if (con.isClosed())
-//        {
-//            con.close();
-//        }
+        if (con.isClosed())
+        {
+            con.close();
+        }
         return con;
     }
 
