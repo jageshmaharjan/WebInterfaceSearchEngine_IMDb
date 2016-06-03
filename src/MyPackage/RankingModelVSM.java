@@ -22,8 +22,8 @@ public class RankingModelVSM
         String  url = "jdbc:mysql://localhost:3306/";
         String dbName = "movieanalysis";
         String driver = "com.mysql.jdbc.Driver";
-        String userName = "jagesh";
-        String password = "jagesh007";
+        String userName = "user";
+        String password = "admin";
         try
         {
             Class.forName(driver).newInstance();
