@@ -15,8 +15,8 @@ public class DAO
     {
         String driver = "com.mysql.jdbc.Driver";
         String connection = "jdbc:mysql://localhost:3306/movieanalysis";
-        String user = "jagesh";
-        String password = "jagesh007";
+        String user = "user";
+        String password = "admin";
 
         Class.forName(driver);
         Connection con = DriverManager.getConnection(connection, user, password);
