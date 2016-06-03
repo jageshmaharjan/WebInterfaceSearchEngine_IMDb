@@ -46,8 +46,30 @@
             </div>
         </div>
         <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h2>Romance</h2>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="//www.youtube.com/embed/ePbKGoIGAXY"></iframe>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h2>Action </h2>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="//www.youtube.com/embed/ePbKGoIGAXY"></iframe>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h2>Comdey </h2>
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="//www.youtube.com/embed/ePbKGoIGAXY"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <br>
             <%
-
 //                List<Integer> movielst = new ArrayList<Integer>();
 //                String search_query = request.getParameter("searchtext");
 //                movielst = RankingModelVSM.rankProcessing(search_query);

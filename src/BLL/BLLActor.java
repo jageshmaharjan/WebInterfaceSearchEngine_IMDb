@@ -41,7 +41,6 @@ public class BLLActor
                 rs.close();
             }
         }
-
         return results;
     }
 }
