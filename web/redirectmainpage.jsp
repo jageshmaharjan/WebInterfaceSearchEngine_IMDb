@@ -139,7 +139,10 @@
                                 <h4 class="list-group-item-heading"> <%=  bom.getMoviename()  %></h4></a>
                             <%= "Dir: " + director.get(bom.getMovieid()) %>
                         </div>
-                        <div class="col-xs-6 col-sm-2"><%= "Rating: " + bom.getRating()  %></div>
+                        <div class="col-xs-6 col-sm-2" align="center">
+                            <%= "Rating: " + bom.getRating()  %> <br>
+                            <%=  movie_sentiment.get(i).getSentiment() + " : " + movie_sentiment.get(i).getScore()  %>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-body">
