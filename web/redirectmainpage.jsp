@@ -54,7 +54,7 @@
         <%
             SentimentAnalyzer sentiAnalyser = new SentimentAnalyzer();
             String query;
-            Map<Emotion, Double> senti_score = new HashMap<>();
+            Map<Emotion, Double> senti_score = new HashMap<Emotion, Double>();
             if (!request.getParameter("searchtext").equals(""))
             {
                 query = request.getParameter("searchtext");
@@ -122,7 +122,7 @@
                 BLLLanguage bllLanguage = new BLLLanguage();
                 language = bllLanguage.getAllLanguageByMovieID(movielst);
 
-                List<BOSentiment> movie_sentiment = new ArrayList<>();
+                List<BOSentiment> movie_sentiment = new ArrayList<BOSentiment>();
                 BLLSentiment bllsenti = new BLLSentiment();
                 movie_sentiment = bllsenti.getSentimentsFromMovie(movielst);
 

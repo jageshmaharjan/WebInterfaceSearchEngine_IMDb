@@ -86,7 +86,7 @@ public class RankingObject
 
         StringJoiner joiner = queryJoiner(query_strings);
 
-        String query = "SELECT sum(docs) as totDocs FROM dictionarytbl WHERE " + joiner ;
+        String query = "SELECT sum(docs) as totDocs FROM dictionarynew WHERE " + joiner ;
         Connection conn = DAO.getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
