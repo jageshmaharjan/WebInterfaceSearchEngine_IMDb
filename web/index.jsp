@@ -10,6 +10,7 @@
 <html lang="en">
   <head>
     <title>Sentiment Classification of Movie</title>
+      <link rel="shortcut icon" href="images/logoJ.jpg" type="image/jpg" />
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">

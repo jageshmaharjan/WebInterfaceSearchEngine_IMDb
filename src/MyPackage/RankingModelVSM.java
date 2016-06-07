@@ -1,7 +1,8 @@
 package MyPackage;
 
+import DAL.DAO;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
@@ -15,25 +16,18 @@ public class RankingModelVSM
     {
         List<Integer> rankedMovies = new ArrayList<>();
 
-        String output = Stopwords.removeStemmedStopWords(search_query.toLowerCase());
+//        String output = Stopwords.removeStemmedStopWords(search_query.toLowerCase());
+        String output = search_query.replaceAll("[^a-zA-Z0-9]"," ");
         String[] normalized = output.split(" |\\.|\\//|\\:|\\?|\\/|\\,|\\'|\\(|\\|\\!|\\)|\\&|\\;|\\@|\\[|\\{|\\}|\\''|\\]|\\-|\\*");
 
-        Connection conn;
-        String  url = "jdbc:mysql://localhost:3306/";
-        String dbName = "movieanalysis";
-        String driver = "com.mysql.jdbc.Driver";
-        String userName = "user";
-        String password = "admin";
-        try
-        {
-            Class.forName(driver).newInstance();
-            conn = DriverManager.getConnection(url + dbName, userName, password);
 
+        try(Connection conn = DAO.getConnection();)
+        {
             int N = 0;
             Set<Integer> alldocsId = new HashSet<>();
             for (int i=0;i<normalized.length;i++)
             {
-                String sql = "SELECT DISTINCT movieID FROM postingtbl WHERE term=?";
+                String sql = "SELECT DISTINCT movieID FROM postingtblnew WHERE term=?";
                 PreparedStatement prepstm = conn.prepareStatement(sql);
                 prepstm.setString(1,normalized[i]);
                 ResultSet rs = prepstm.executeQuery();
@@ -50,7 +44,7 @@ public class RankingModelVSM
             //List<Double> doclen = new ArrayList<>();
             for (int i=0; i<normalized.length; i++)
             {
-                String sql = "SELECT DISTINCT movieID, sum(frequency) as freq FROM postingtbl where term=? GROUP by movieID";
+                String sql = "SELECT DISTINCT movieID, sum(frequency) as freq FROM postingtblnew where term=? GROUP by movieID";
                 PreparedStatement prepstm = conn.prepareStatement(sql);
                 prepstm.setString(1,normalized[i]);
                 ResultSet rs = prepstm.executeQuery();
@@ -76,7 +70,7 @@ public class RankingModelVSM
             for (int i=0; i<normalized.length; i++)
             {
                 int m = 0;
-                String sql = "SELECT DISTINCT movieID, sum(frequency) as freq FROM postingtbl WHERE term=? GROUP BY movieID";
+                String sql = "SELECT DISTINCT movieID, sum(frequency) as freq FROM postingtblnew WHERE term=? GROUP BY movieID";
                 PreparedStatement prepstm = conn.prepareStatement(sql);
                 prepstm.setString(1,normalized[i]);
                 ResultSet rs = prepstm.executeQuery();

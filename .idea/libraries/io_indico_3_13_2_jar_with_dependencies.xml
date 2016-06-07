@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="io.indico-3.13.2-jar-with-dependencies">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/lib/io.indico-3.13.2-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="TEST_IMDbWebCrawl:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/TEST_IMDbWebCrawl_war</output-path>
+    <root id="archive" name="TEST_IMDbWebCrawl_war.war">
+      <element id="artifact" artifact-name="TEST_IMDbWebCrawl:war exploded" />
+    </root>
+  </artifact>
+</component>

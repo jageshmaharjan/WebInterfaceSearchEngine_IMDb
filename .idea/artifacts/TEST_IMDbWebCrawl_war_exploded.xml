@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="TEST_IMDbWebCrawl:war exploded">
+  <artifact type="exploded-war" build-on-make="true" name="TEST_IMDbWebCrawl:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/TEST_IMDbWebCrawl_war_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="TEST_IMDbWebCrawl/web/Web" />
@@ -11,6 +11,7 @@
           <element id="library" level="project" name="exude-0.0.2" />
           <element id="library" level="project" name="json-simple-1.1.1" />
           <element id="library" level="project" name="mysql-connector-java-5.1.38-bin" />
+          <element id="library" level="project" name="io.indico-3.13.2-jar-with-dependencies" />
         </element>
       </element>
     </root>

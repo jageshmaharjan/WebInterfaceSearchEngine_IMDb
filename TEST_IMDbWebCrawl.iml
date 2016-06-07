@@ -23,5 +23,6 @@
     <orderEntry type="library" name="exude-0.0.2" level="project" />
     <orderEntry type="library" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.38-bin" level="project" />
+    <orderEntry type="library" name="io.indico-3.13.2-jar-with-dependencies" level="project" />
   </component>
 </module>

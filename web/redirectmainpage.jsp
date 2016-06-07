@@ -3,11 +3,17 @@
 <%@ page import="BLL.*" %>
 <%@ page import="BO.BOMovie" %>
 <%@ page import="java.util.*" %>
+<%@ page import="MyPackage.SentimentAnalyzer" %>
+<%@ page import="io.indico.api.text.Emotion" %>
+<%@ page import="MyPackage.RankingObject" %>
+<%@ page import="BO.BOActor" %>
+<%@ page import="BO.BOSentiment" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html lang="en">
 <head>
-    <title>Your Movies...</title>
+    <title>Your Movies</title>
+    <link rel="shortcut icon" href="images/logoJ.jpg" type="image/jpg" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,63 +51,82 @@
                 </form>
             </div>
         </div>
+        <%
+            SentimentAnalyzer sentiAnalyser = new SentimentAnalyzer();
+            String query;
+            Map<Emotion, Double> senti_score = new HashMap<>();
+            if (!request.getParameter("searchtext").equals(""))
+            {
+                query = request.getParameter("searchtext");
+                senti_score = sentiAnalyser.getSentiment(query);
+            }
+            //this piece of code uses the movie_sentiment
+//            List<Integer> docIds = new ArrayList<>();
+//            docIds = sentiAnalyser.getDocIds(senti_score);
+
+        %>
         <div>
         <div class="container">
             <div class="row">
+                <div class="col-sm-12">
+                    <h6 align="center">
+                        Sentiment of Your Query is <%= ((request.getParameter("searchtext").equals(null))?"No Sentiment":senti_score).toString() %>
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-4">
-                    <h2>Romance</h2>
+                    <h4 align="center">Romance</h4>
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="//www.youtube.com/embed/ePbKGoIGAXY"></iframe>
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/4axVlG-Ahxk"></iframe>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <h2>Action </h2>
+                    <h4 align="center">Action </h4>
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="//www.youtube.com/embed/ePbKGoIGAXY"></iframe>
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/z4UDNzXD3qA"></iframe>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <h2>Comdey </h2>
+                    <h4 align="center">Comedy </h4>
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="//www.youtube.com/embed/ePbKGoIGAXY"></iframe>
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/eDr1MD2a1aM"></iframe>
                     </div>
                 </div>
             </div>
         </div>
             <br>
             <%
-//                List<Integer> movielst = new ArrayList<Integer>();
-//                String search_query = request.getParameter("searchtext");
-//                movielst = RankingModelVSM.rankProcessing(search_query);
-
-                List<Integer> num = new ArrayList<Integer>();
-                for (int i=1;i<100;i++)
-                {
-                    num.add(i);
-                }
+                List<Integer> movielst = new ArrayList<Integer>();
+                String search_query = request.getParameter("searchtext");
+                movielst = RankingObject.rank(search_query);
 
                 BLLMovies bllmovie = new BLLMovies();
                 List<BOMovie> bomovelst = new ArrayList<BOMovie>();
-                bomovelst = bllmovie.getAllMoviesFromMovies(num);
-
+                bomovelst = bllmovie.getAllMoviesFromMovies(movielst);
 
                 Map<Integer, List<String> > actor = new HashMap<Integer, List<String> >();
+                List<BOActor> actorslst = new ArrayList<>();
                 BLLActor bllActor = new BLLActor();
-                actor = bllActor.getAllActorsFromMovies(num);
+                actorslst = bllActor.getAllActorsFromMovies(movielst);
 
                 Map<Integer,List<String>> director = new HashMap<Integer,List<String>>();
                 BLLDirector bllDirector = new BLLDirector();
-                director = bllDirector.getAllDirectorByMovieID(num);
+                director = bllDirector.getAllDirectorByMovieID(movielst);
 
                 Map<Integer,List<String>> genre = new HashMap<Integer,List<String>>();
                 BLLGenre bllGenre = new BLLGenre();
-                genre = bllGenre.getAllGenreByMovieID(num);
+                genre = bllGenre.getAllGenreByMovieID(movielst);
 
                 Map<Integer,List<String>> language = new HashMap<Integer,List<String>>();
                 BLLLanguage bllLanguage = new BLLLanguage();
-                language = bllLanguage.getAllLanguageByMovieID(num);
+                language = bllLanguage.getAllLanguageByMovieID(movielst);
 
+                List<BOSentiment> movie_sentiment = new ArrayList<>();
+                BLLSentiment bllsenti = new BLLSentiment();
+                movie_sentiment = bllsenti.getSentimentsFromMovie(movielst);
 
+                int i = 0;
                 for (BOMovie bom : bomovelst)
                 {
             %>
@@ -130,7 +155,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6 col-sm-11">
-                                    <%= "\t Starting: " + actor.get(bom.getMovieid()) %>
+                                    <%= "\t Starting: " + actorslst.get(i).getActors() %>
                                 </div>
                             </div>
                             <div class="row">
@@ -148,8 +173,22 @@
                 </div>
             </div>
             <%
+                    i++;
                 }
             %>
+            <ul class="pagination">
+                <%
+                    int movie_per_pg = movielst.size()/10;
+                    int index = 1;
+                    for (int j=0;j<movielst.size(); j+=movie_per_pg)
+                    {
+                %>
+                        <li><a href="#"> <%= index %> </a> </li>
+                <%
+                        index++;
+                    }
+                %>
+            </ul>
         </div>
     </div>
 
