@@ -27,7 +27,7 @@ public class SentimentAnalyzer
         Map params = new HashMap();
         params.put("threshold", 0.25);
 
-        Indico indico = new Indico("4c89f284b1c43ea223525cc2f8bbb7f2");
+        Indico indico = new Indico("d61b95bb1c85ab263fd5fc2f910d367d");     //from gmail account
         Map<Emotion,Double> results = indico.emotion.predict(query,params).getEmotion();
 
         return results;

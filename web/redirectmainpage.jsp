@@ -106,7 +106,7 @@
                 bomovelst = bllmovie.getAllMoviesFromMovies(movielst);
 
                 Map<Integer, List<String> > actor = new HashMap<Integer, List<String> >();
-                List<BOActor> actorslst = new ArrayList<>();
+                List<BOActor> actorslst = new ArrayList<BOActor>();
                 BLLActor bllActor = new BLLActor();
                 actorslst = bllActor.getAllActorsFromMovies(movielst);
 
